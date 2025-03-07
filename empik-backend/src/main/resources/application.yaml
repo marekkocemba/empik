@@ -1,0 +1,9 @@
+spring:
+  application.name: empik-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: postgres
+    password: admin
+    driverClassName: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:/liquibase/liquibase-changeLog.yaml
