@@ -55,7 +55,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: complaint_reporting_customer_id
+                  name: customer_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
                   type: bigint
                   constraints:
                     nullable: false
@@ -75,9 +80,47 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            baseColumnNames: complaint_reporting_customer_id
+            baseColumnNames: customer_id
             baseTableName: complaints
-            constraintName: fk_complaints_complaint_reporting_customer_id
+            constraintName: fk_complaints_customer_id
             referencedColumnNames: id
             referencedTableName: customers
             validate: true
+  - changeSet:
+      id: "Added products table"
+      author: Marek Kocemba
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: timestamp with time zone
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: complaints
+            constraintName: fk_complaints_product_id
+            referencedColumnNames: id
+            referencedTableName: products
+            validate: true
+  - changeSet:
+      id: "Added uniqueness on product-customer columns in complaints table"
+      author: Marek Kocemba
+      changes:
+        - addUniqueConstraint:
+            columnNames: customer_id, product_id
+            constraintName: customer_product_id
+            tableName: complaints

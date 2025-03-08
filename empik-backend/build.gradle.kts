@@ -26,6 +26,7 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.liquibase:liquibase-core")
 	implementation("org.postgresql:postgresql:42.7.4")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")

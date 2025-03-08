@@ -7,4 +7,6 @@ public interface CustomerService {
     CustomerResponse createCustomer(CreateCustomerCommand command);
 
     List<CustomerResponse> getCustomers();
+
+    CustomerResponse getCustomerById(Long customerId);
 }
