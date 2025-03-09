@@ -3,7 +3,9 @@ package com.empik.empik_backend.domain.complaint;
 import com.empik.empik_backend.domain.complaint.api.ComplaintResponse;
 import com.empik.empik_backend.domain.complaint.api.ComplaintService;
 import com.empik.empik_backend.domain.complaint.api.CreateComplaintCommand;
+import com.empik.empik_backend.domain.complaint.api.UpdateComplaintCommand;
 import com.empik.empik_backend.infrastructure.exception.ClientException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +36,24 @@ class ComplaintServiceImpl implements ComplaintService {
         complaint.incrementComplaintCounter();
         complaintRepository.save(complaint);
         return complaint.toResponse();
+    }
+
+    @Override
+    public ComplaintResponse getComplaintById(Long id) {
+        Complaint complaint = getComplaint(id);
+        return complaint.toResponse();
+    }
+
+    @Override
+    public ComplaintResponse updateComplaint(UpdateComplaintCommand command, Long id) {
+        Complaint complaint = getComplaint(id);
+        complaint.update(command);
+        complaintRepository.save(complaint);
+        return complaint.toResponse();
+    }
+
+    private Complaint getComplaint(Long id){
+        return complaintRepository.findById(id)
+                .orElseThrow(() -> new ClientException("No complaint with id: "+id));
     }
 }

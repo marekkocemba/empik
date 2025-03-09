@@ -3,6 +3,7 @@ package com.empik.empik_backend.application.complaint;
 import com.empik.empik_backend.domain.complaint.api.ComplaintResponse;
 import com.empik.empik_backend.domain.complaint.api.ComplaintService;
 import com.empik.empik_backend.domain.complaint.api.CreateComplaintCommand;
+import com.empik.empik_backend.domain.complaint.api.UpdateComplaintCommand;
 import com.empik.empik_backend.domain.complaint_history.api.ComplaintHistoryResponse;
 import com.empik.empik_backend.domain.complaint_history.api.ComplaintHistoryService;
 import com.empik.empik_backend.domain.complaint_history.api.CreateComplaintHistoryCommand;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +48,23 @@ class ComplaintFacade {
             return complaintResponse.toApplicationResponse(List.of(complaintHistoryResponse));
         }
 
+    }
+
+    public ComplaintApplicationResponse getComplaintById(Long id) {
+
+        ComplaintResponse complaintResponse = complaintService.getComplaintById(id);
+        List<ComplaintHistoryResponse> complaintHistoryResponseList = complaintHistoryService.findByComplaintId(complaintResponse.id());
+        return complaintResponse.toApplicationResponse(complaintHistoryResponseList);
+    }
+
+    @Transactional
+    public ComplaintApplicationResponse updateComplaint(UpdateComplaintCommand command, Long id) {
+
+        ComplaintResponse complaintResponse = complaintService.updateComplaint(command, id);
+        List<ComplaintHistoryResponse> complaintHistoryResponseList = complaintHistoryService.findByComplaintId(complaintResponse.id());
+        ComplaintHistoryResponse complaintHistoryResponse = complaintHistoryService.createComplaintHistory(new CreateComplaintHistoryCommand(complaintResponse.id(), complaintResponse.content()));
+        List<ComplaintHistoryResponse> completeHistoryResponseList = Stream.concat(complaintHistoryResponseList.stream(), Stream.of(complaintHistoryResponse)).toList();
+
+        return complaintResponse.toApplicationResponse(completeHistoryResponseList);
     }
 }

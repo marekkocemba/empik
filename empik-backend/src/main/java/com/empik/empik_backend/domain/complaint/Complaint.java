@@ -2,6 +2,7 @@ package com.empik.empik_backend.domain.complaint;
 
 import com.empik.empik_backend.domain.complaint.api.ComplaintResponse;
 import com.empik.empik_backend.domain.complaint.api.CreateComplaintCommand;
+import com.empik.empik_backend.domain.complaint.api.UpdateComplaintCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -52,5 +53,9 @@ class Complaint {
     public void incrementComplaintCounter() {
         this.complaintCounter++;
         this.lastModifiedDate = Instant.now();
+    }
+
+    public void update(UpdateComplaintCommand command) {
+        this.content = command.content();
     }
 }
