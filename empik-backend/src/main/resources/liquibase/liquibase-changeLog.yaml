@@ -18,7 +18,6 @@ databaseChangeLog:
               - column:
                   name: created_date
                   type: timestamp with time zone
-                  defaultValue: now()
                   constraints:
                     nullable: false
               - column:
@@ -40,13 +39,11 @@ databaseChangeLog:
               - column:
                   name: created_date
                   type: timestamp with time zone
-                  defaultValue: now()
                   constraints:
                     nullable: false
               - column:
                   name: last_modified_date
                   type: timestamp with time zone
-                  defaultValue: now()
                   constraints:
                     nullable: false
               - column:
@@ -103,7 +100,6 @@ databaseChangeLog:
               - column:
                   name: created_date
                   type: timestamp with time zone
-                  defaultValue: now()
                   constraints:
                     nullable: false
               - column:
@@ -124,3 +120,37 @@ databaseChangeLog:
             columnNames: customer_id, product_id
             constraintName: customer_product_id
             tableName: complaints
+  - changeSet:
+      id: "Added complaints history tableJ"
+      author: Marek Kocemba
+      changes:
+        - createTable:
+            tableName: complaints_history
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: varchar(50)
+              - column:
+                  name: complaint_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: complaint_id
+            baseTableName: complaints_history
+            constraintName: fk_complaints_history_complaint_id
+            referencedColumnNames: id
+            referencedTableName: complaints
+            validate: true

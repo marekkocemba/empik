@@ -7,3 +7,5 @@ spring:
     driverClassName: org.postgresql.Driver
   liquibase:
     change-log: classpath:/liquibase/liquibase-changeLog.yaml
+client:
+  ip-api.url: http://ip-api.com/json/

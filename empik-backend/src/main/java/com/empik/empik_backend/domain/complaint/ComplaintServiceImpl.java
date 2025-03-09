@@ -30,6 +30,7 @@ class ComplaintServiceImpl implements ComplaintService {
 
         Complaint complaint = complaintRepository.findByCustomerIdAndProductId(customerId, productId)
                 .orElseThrow(() -> new ClientException("No complaint with customerId: "+customerId+" and productId: "+productId));
+
         complaint.incrementComplaintCounter();
         complaintRepository.save(complaint);
         return complaint.toResponse();

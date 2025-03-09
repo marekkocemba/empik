@@ -16,7 +16,7 @@ class ComplaintController {
     private final ComplaintFacade complaintFacade;
 
     @PostMapping
-    public ComplaintResponse createComplaint(@RequestBody @Valid CreateComplaintCommandApplication command) {
+    public ComplaintApplicationResponse createComplaint(@RequestBody @Valid CreateComplaintCommandApplication command) {
         return complaintFacade.createComplaint(command);
     }
 }
