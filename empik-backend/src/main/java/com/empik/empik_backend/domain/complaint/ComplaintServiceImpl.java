@@ -5,13 +5,12 @@ import com.empik.empik_backend.domain.complaint.api.ComplaintService;
 import com.empik.empik_backend.domain.complaint.api.CreateComplaintCommand;
 import com.empik.empik_backend.domain.complaint.api.UpdateComplaintCommand;
 import com.empik.empik_backend.infrastructure.exception.ClientException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-class ComplaintServiceImpl implements ComplaintService {
+public class ComplaintServiceImpl implements ComplaintService {
 
     private final ComplaintRepository complaintRepository;
 

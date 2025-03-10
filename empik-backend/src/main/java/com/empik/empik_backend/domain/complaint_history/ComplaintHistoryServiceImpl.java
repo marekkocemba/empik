@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-class ComplaintHistoryServiceImpl implements ComplaintHistoryService {
+public class ComplaintHistoryServiceImpl implements ComplaintHistoryService {
 
     private final ComplaintHistoryRepository complainthistoryRepository;
 

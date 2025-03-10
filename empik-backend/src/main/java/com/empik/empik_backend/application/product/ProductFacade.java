@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-class ProductFacade {
+public class ProductFacade {
 
     private final ProductService productService;
 

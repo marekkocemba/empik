@@ -4,7 +4,7 @@ import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
 
-interface ComplaintHistoryRepository extends ListCrudRepository<ComplaintHistory, Long>{
+public interface ComplaintHistoryRepository extends ListCrudRepository<ComplaintHistory, Long>{
 
     List<ComplaintHistory> findByComplaintId(Long complaintId);
 }

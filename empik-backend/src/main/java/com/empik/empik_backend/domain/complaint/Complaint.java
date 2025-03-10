@@ -3,8 +3,8 @@ package com.empik.empik_backend.domain.complaint;
 import com.empik.empik_backend.domain.complaint.api.ComplaintResponse;
 import com.empik.empik_backend.domain.complaint.api.CreateComplaintCommand;
 import com.empik.empik_backend.domain.complaint.api.UpdateComplaintCommand;
+import com.empik.empik_backend.infrastructure.entity.AbstractEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -12,10 +12,8 @@ import java.time.Instant;
 
 @Table("complaints")
 @RequiredArgsConstructor
-class Complaint {
+class Complaint extends AbstractEntity {
 
-    @Id
-    private Long id;
     private Long customerId;
     private Long productId;
     private Instant createdDate;
@@ -40,7 +38,7 @@ class Complaint {
 
     public ComplaintResponse toResponse() {
         return new ComplaintResponse(
-                id,
+                getId(),
                 customerId,
                 productId,
                 createdDate,
@@ -57,5 +55,6 @@ class Complaint {
 
     public void update(UpdateComplaintCommand command) {
         this.content = command.content();
+        this.lastModifiedDate = Instant.now();
     }
 }

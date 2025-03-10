@@ -2,18 +2,16 @@ package com.empik.empik_backend.domain.customer;
 
 import com.empik.empik_backend.domain.customer.api.CreateCustomerCommand;
 import com.empik.empik_backend.domain.customer.api.CustomerResponse;
+import com.empik.empik_backend.infrastructure.entity.AbstractEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
 
 @Table("customers")
 @RequiredArgsConstructor
-class Customer {
+class Customer extends AbstractEntity {
 
-    @Id
-    private Long id;
     private String name;
     private String surname;
     private Instant createdDate;
@@ -24,6 +22,6 @@ class Customer {
         this.createdDate = Instant.now();}
 
     public CustomerResponse toResponse() {
-        return new CustomerResponse(id, name, surname, createdDate);
+        return new CustomerResponse(getId(), name, surname, createdDate);
     }
 }

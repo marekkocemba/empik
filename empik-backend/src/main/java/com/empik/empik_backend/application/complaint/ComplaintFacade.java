@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-class ComplaintFacade {
+public class ComplaintFacade {
 
     private final ComplaintService complaintService;
     private final ComplaintHistoryService complaintHistoryService;
