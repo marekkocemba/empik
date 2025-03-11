@@ -1,0 +1,80 @@
+services:
+  nginx:
+    image: nginx:1.21.6
+    container_name: empik-nginx
+    volumes:
+      - "./nginx/nginx.conf.template:/etc/nginx/templates/default.conf.template"
+    ports:
+      - 80:80
+    restart: unless-stopped
+    networks:
+      empik-net:
+        ipv4_address: 172.30.30.17
+    extra_hosts:
+      - "empik-postgres:172.30.30.14"
+      - "empik-keycloak:172.30.30.10"
+      - "empik-backend:172.30.30.11"
+
+  postgres:
+    image: postgres:14.2
+    container_name: empik-postgres
+    ports:
+      - 5432:5432
+#    volumes:
+#      - "./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_MULTIPLE_DATABASES: empik-db
+    volumes:
+      - "./postgres/init.sql:/docker-entrypoint-initdb.d/db.sql"
+    networks:
+      empik-net:
+        ipv4_address: 172.30.30.14
+    restart: unless-stopped
+
+  empik-keycloak:
+    image: quay.io/keycloak/keycloak:22.0.4
+    container_name: empik-keycloak
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    networks:
+      empik-net:
+        ipv4_address: 172.30.30.10
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realms.json
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import/
+
+  empik-backend:
+    build: .
+    ports:
+      - "8090:8090"
+    container_name: empik-backend
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+    networks:
+      empik-net:
+        ipv4_address: 172.30.30.11
+#  empik-backend-node-2:
+#    build: .
+#    ports:
+#      - "8091:8090"
+#    container_name: empik-backend-node-2
+#    networks:
+#      empik-net:
+#        ipv4_address: 172.30.30.12
+
+networks:
+  empik-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.30.0/24

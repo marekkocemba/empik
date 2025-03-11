@@ -1,11 +1,14 @@
 spring:
-  application.name: empik-backend
+  application:
+    name: empik-backend
   datasource:
-    url: jdbc:postgresql://localhost:5432/test
+    url: jdbc:postgresql://localhost:5432/empik_db
     username: postgres
-    password: admin
+    password: postgres
     driverClassName: org.postgresql.Driver
   liquibase:
     change-log: classpath:/liquibase/liquibase-changeLog.yaml
 client:
   ip-api.url: http://ip-api.com/json/
+server:
+  port: 8090

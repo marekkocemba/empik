@@ -1,0 +1,16 @@
+
+
+server {
+	listen 80;
+
+	location / {
+		proxy_pass http://backend;
+	}
+}
+
+upstream backend {
+
+    server 172.30.30.11:8090 max_fails=0 fail_timeout=10s weight=1;
+    server 172.30.30.11:8090 max_fails=0 fail_timeout=10s weight=1;
+
+} 

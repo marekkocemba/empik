@@ -1,0 +1,1 @@
+CREATE DATABASE empik_db;
